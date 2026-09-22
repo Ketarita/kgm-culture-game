@@ -1,0 +1,783 @@
+<title>KGM Culture Conversation Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  /* =====================================================================
+     1. COLORS
+     ---------------------------------------------------------------------
+     This is a fixed brand identity (black / cream / gold), so it does NOT
+     switch with light/dark device settings. To re-theme the whole game,
+     change the values below — every color in the page pulls from here.
+     ===================================================================== */
+  :root{
+    --ink:        #121110;             /* main background (near-black, warm) */
+    --ink-soft:   #1C1A17;             /* card / panel surface on black */
+    --ink-line:   rgba(247,241,228,.14); /* hairline borders on black */
+    --cream:      #F7F1E4;             /* primary text on black, cream surface */
+    --cream-dim:  #C9C2B2;             /* secondary / muted text on black */
+    --paper:      #EFE7D4;             /* cream background sections */
+    --paper-line: rgba(18,17,16,.12);  /* hairline borders on cream */
+    --gold:       #C6A15B;             /* accent — buttons, labels, dividers */
+    --gold-deep:  #9C7B3F;             /* pressed / darker gold */
+    --gold-tint:  rgba(198,161,91,.16);/* faint gold fills */
+
+    --shell-h: 100%;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* =====================================================================
+     2. FONTS
+     ---------------------------------------------------------------------
+     Display face  = Fraunces  (headlines, the big prompt text, wordmark)
+     UI / body face = Manrope  (labels, buttons, small text)
+     To swap either, change the family names below AND the Google Fonts
+     <link> at the very top of this file.
+     ===================================================================== */
+  :root{
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "Manrope", -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html, body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--cream);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+
+  #app{
+    position:relative;
+    height:100%;
+    width:100%;
+    max-width:560px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+
+  .screen{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    padding:28px 24px calc(24px + env(safe-area-inset-bottom,0px));
+    opacity:0;
+    transform:translateY(12px);
+    pointer-events:none;
+    transition:opacity .38s ease, transform .38s ease;
+  }
+  .screen.active{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+
+  .eyebrow{
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:.72rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+
+  .rule{
+    width:40px;
+    height:2px;
+    background:var(--gold);
+    border:0;
+    border-radius:2px;
+  }
+
+  button{ font-family:inherit; cursor:pointer; }
+
+  .btn{
+    appearance:none;
+    border:0;
+    border-radius:999px;
+    padding:16px 28px;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:1rem;
+    letter-spacing:.01em;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:transform .15s ease, opacity .15s ease, background .15s ease;
+    width:100%;
+  }
+  .btn:active{ transform:scale(.97); }
+  .btn-primary{ background:var(--gold); color:var(--ink); }
+  .btn-primary:hover{ background:#d4af68; }
+  .btn-ghost{
+    background:transparent;
+    color:var(--cream);
+    border:1.5px solid var(--ink-line);
+  }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
+  .btn-outline-gold{
+    background:transparent;
+    color:var(--gold);
+    border:1.5px solid var(--gold);
+  }
+  .btn-outline-gold:hover{ background:var(--gold-tint); }
+
+  /* ---------------- Landing screen ---------------- */
+  #screen-landing{
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    gap:0;
+  }
+  .landing-mark{
+    width:64px; height:64px;
+    margin-bottom:22px;
+  }
+  .landing-title{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-optical-sizing:auto;
+    font-size:clamp(2.2rem, 9vw, 2.9rem);
+    line-height:1.05;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+    margin:0;
+  }
+  .landing-tag{
+    margin-top:14px;
+    font-weight:800;
+    font-size:.85rem;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+  .landing-sub{
+    margin-top:20px;
+    max-width:38ch;
+    font-size:1rem;
+    line-height:1.55;
+    color:var(--cream-dim);
+  }
+  .landing-cta{ margin-top:36px; width:100%; max-width:280px; }
+
+  /* ---------------- Category screen ---------------- */
+  #screen-categories{ justify-content:flex-start; }
+  .cat-header{ margin-top:8px; margin-bottom:28px; }
+  .cat-title{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(1.8rem, 7vw, 2.3rem);
+    margin:10px 0 0;
+    letter-spacing:-.01em;
+  }
+  .cat-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    flex:1;
+    align-content:start;
+  }
+  .cat-card{
+    background:var(--ink-soft);
+    border:1.5px solid var(--ink-line);
+    border-radius:22px;
+    padding:20px 16px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    aspect-ratio:1/1.08;
+    text-align:left;
+    color:var(--cream);
+    transition:border-color .18s ease, transform .15s ease, background .18s ease;
+  }
+  .cat-card:hover{ border-color:var(--gold); background:#211E19; }
+  .cat-card:active{ transform:scale(.97); }
+  .cat-card-art{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .cat-card-art svg{ width:58px; height:58px; stroke:var(--gold); opacity:.92; }
+  .cat-card-name{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:1.15rem;
+    line-height:1.15;
+    margin-top:14px;
+  }
+
+  /* ---------------- Game screen ---------------- */
+  #screen-game{ padding-top:20px; }
+  .game-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .game-cat-label{
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:.72rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+  .icon-btn{
+    background:transparent;
+    border:1.5px solid var(--ink-line);
+    color:var(--cream-dim);
+    border-radius:999px;
+    padding:8px 14px;
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.02em;
+  }
+  .icon-btn:hover{ border-color:var(--gold); color:var(--gold); }
+
+  .dots{
+    display:flex;
+    gap:6px;
+    margin:16px 0 4px;
+    flex-wrap:wrap;
+  }
+  .dot{
+    width:6px; height:6px;
+    border-radius:999px;
+    background:var(--ink-line);
+    transition:background .2s ease, width .2s ease;
+  }
+  .dot.is-active{ background:var(--gold); width:16px; }
+
+  .card-stage{
+    position:relative;
+    flex:1;
+    margin-top:18px;
+    display:flex;
+    align-items:stretch;
+  }
+  .prompt-card{
+    position:absolute;
+    inset:0;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:28px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:38px 26px;
+    touch-action:pan-y;
+    cursor:grab;
+    box-shadow:0 18px 40px rgba(0,0,0,.35);
+    will-change:transform;
+  }
+  .prompt-card:active{ cursor:grabbing; }
+  .prompt-kind{
+    font-family:var(--font-body);
+    font-weight:800;
+    font-size:.68rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold-deep);
+    margin-bottom:18px;
+  }
+  .prompt-text{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:clamp(1.2rem, 5.8vw, 1.55rem);
+    line-height:1.28;
+    text-wrap:balance;
+  }
+  .prompt-note{
+    font-family:var(--font-body);
+    font-style:italic;
+    font-weight:500;
+    font-size:.86rem;
+    line-height:1.45;
+    color:var(--gold-deep);
+    margin-top:16px;
+    max-width:34ch;
+    text-wrap:balance;
+  }
+  .prompt-note:empty{ display:none; }
+  .prompt-brand{
+    position:absolute;
+    bottom:20px;
+    left:0; right:0;
+    text-align:center;
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--paper-line);
+    color:rgba(18,17,16,.32);
+  }
+  .swipe-hint{
+    text-align:center;
+    font-size:.75rem;
+    color:var(--cream-dim);
+    margin-top:12px;
+    opacity:.8;
+  }
+
+  .game-actions{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:16px;
+  }
+
+  /* ---------------- End screen ---------------- */
+  #screen-end{
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+  .end-title{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(1.9rem, 8vw, 2.4rem);
+    line-height:1.12;
+    text-wrap:balance;
+    margin:0;
+  }
+  .end-quote{
+    margin-top:16px;
+    font-style:italic;
+    color:var(--cream-dim);
+    font-size:1rem;
+    max-width:32ch;
+  }
+  .end-actions{
+    margin-top:34px;
+    width:100%;
+    max-width:280px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .screen, .prompt-card, .dot, .cat-card, .btn{ transition:none !important; }
+  }
+
+  @media (min-width:560px){
+    body{ background:var(--ink); }
+  }
+</style>
+
+<div id="app">
+
+  <!-- =================================================================
+       SCREEN 1 — LANDING
+       ================================================================= -->
+  <section id="screen-landing" class="screen active">
+    <svg class="landing-mark" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="30" stroke="#C6A15B" stroke-width="1.5"/>
+      <circle cx="32" cy="32" r="4" fill="#C6A15B"/>
+      <path d="M32 2 L32 14 M32 50 L32 62 M2 32 L14 32 M50 32 L62 32" stroke="#C6A15B" stroke-width="1.5"/>
+    </svg>
+    <h1 class="landing-title">KGM Culture<br>Conversation Cards</h1>
+    <p class="landing-tag">Tap. Swipe. Talk.</p>
+    <p class="landing-sub">A conversation game inspired by the culture, memories, music, laughter, and history that connect us.</p>
+    <div class="landing-cta">
+      <button class="btn btn-primary" id="btn-start">Start Playing</button>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SCREEN 2 — CATEGORY SELECT
+       ================================================================= -->
+  <section id="screen-categories" class="screen">
+    <div class="cat-header">
+      <span class="eyebrow">KGM Culture Conversation Cards</span>
+      <h2 class="cat-title">Choose Your Vibe</h2>
+    </div>
+    <div class="cat-grid" id="cat-grid"><!-- cards injected by JS from CATEGORIES --></div>
+  </section>
+
+  <!-- =================================================================
+       SCREEN 3 — GAME / CARD VIEW
+       ================================================================= -->
+  <section id="screen-game" class="screen">
+    <div class="game-top">
+      <span class="game-cat-label" id="game-cat-label">Category</span>
+      <button class="icon-btn" id="btn-change-cat">Change Category</button>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="card-stage">
+      <article class="prompt-card" id="prompt-card">
+        <span class="prompt-kind" id="prompt-kind">Conversation</span>
+        <p class="prompt-text" id="prompt-text">Loading…</p>
+        <p class="prompt-note" id="prompt-note"></p>
+        <span class="prompt-brand">KGM Market</span>
+      </article>
+    </div>
+    <p class="swipe-hint">Swipe left or right, or tap Next Question</p>
+    <div class="game-actions">
+      <button class="btn btn-primary" id="btn-next">Next Question</button>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SCREEN 4 — END SCREEN
+       ================================================================= -->
+  <section id="screen-end" class="screen">
+    <span class="eyebrow">Round Complete</span>
+    <h2 class="end-title" style="margin-top:14px;">Keep the conversation going.</h2>
+    <p class="end-quote">“Culture lives in the stories we share.”</p>
+    <div class="end-actions">
+      <button class="btn btn-primary" id="btn-play-again">Play Again</button>
+      <button class="btn btn-outline-gold" id="btn-shop">Shop KGM</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ===================================================================
+     3. LINKS
+     -------------------------------------------------------------------
+     Change the KGM Market website URL here. It's used by the "Shop KGM"
+     button on the end screen.
+     =================================================================== */
+  var SHOP_URL = "https://kgmmarket.com";
+
+  /* ===================================================================
+     4. CATEGORIES
+     -------------------------------------------------------------------
+     To rename a category, edit "name" below (keep the matching "id" the
+     same, since PROMPTS below is keyed by id). To add a category, add a
+     new {id, name, icon} entry here AND a matching array in PROMPTS.
+     "icon" picks one of the simple line-icons defined in ICONS futher
+     down (cassette, tv, laugh, torch) — reuse an existing one or leave it
+     as "cassette" if unsure.
+     =================================================================== */
+  var CATEGORIES = [
+    { id: "nostalgia", name: "Black Nostalgia",            icon: "cassette" },
+    { id: "music",     name: "Music, TV, & Entertainment", icon: "tv"       },
+    { id: "comedy",    name: "Comedy",                     icon: "laugh"    },
+    { id: "history",   name: "Black History",              icon: "torch"   }
+  ];
+
+  /* ===================================================================
+     5. PROMPTS
+     -------------------------------------------------------------------
+     This is the part a non-technical person edits most. Each category
+     id below (must match a CATEGORIES id above) holds a plain list of
+     prompts. Each prompt is one line:
+
+        { kind: "This or That", text: "Kool-Aid or lemonade?", note: "" }
+
+     - "kind" is the small gold label shown above the question. Use
+       whatever you like: "Conversation", "Finish the Line", "Memory",
+       "Hot Take", "Did You Know" — or your own.
+     - "text" is the big question shown on the card.
+     - "note" is OPTIONAL — a smaller italic line under the question
+       that jogs the memory, sets up the joke, or gives a bit of
+       context. Leave it as "" (empty quotes) if a prompt doesn't need
+       one.
+
+     To ADD a prompt: copy a line and change the words.
+     To REMOVE a prompt: delete its line.
+     To EDIT a prompt: change the text between the quotes.
+     Nothing else in this file needs to change.
+     =================================================================== */
+  var PROMPTS = {
+
+    nostalgia: [
+      { kind: "Debate",       text: "What's the correct way to make a real pitcher of Kool-Aid?",
+        note: "Hot water first so the sugar dissolves right, then ice. And if you weren't dumping in a solid 5 lbs of sugar, were you even really making it?" },
+      { kind: "Memory",       text: "What did every kid's birthday party have, back in the day?",
+        note: "Chips, hot dogs, Neapolitan ice cream, and a cake somebody's mama baked herself — store-bought was not an option." },
+      { kind: "Memory",       text: "What's a game you played outside as a kid that nobody plays anymore?",
+        note: "Shame, shame, shame — I don't wanna go to Mexico no more, more, more... wait, were we talking about double dutch, hopscotch, or hot peas and butter, come get your supper?" },
+      { kind: "Conversation", text: "What's the one activity that instantly takes you back to grandma's house?",
+        note: "All the cousins on the living room floor, somebody cussing then switching to their 'answering the phone' voice, shelling peas on the porch, Matlock and The Young and the Restless playing all day." },
+      { kind: "Conversation", text: "What are your favorite sayings the old folks used to say?",
+        note: "“Chile, it's a time and I ain't talkin' turpentine.” “Ain't nothing but a chicken wing on a string.”" },
+      { kind: "Memory",       text: "What hairstyle instantly takes you back to the 90s?",
+        note: "Wigs were strictly for the grandmas, crochet went out then came back, baby hairs made a comeback — and don't even start on hot-comb day." },
+      { kind: "Conversation", text: "What's a TV theme song you could hum right now without thinking?",
+        note: "Go ahead, hum the Living Single theme. Everybody at this table just heard it in their head, don't lie." },
+      { kind: "Hot Take",     text: "The remote control was never 'misplaced' — it was stolen.",
+        note: "And when it turned up in the couch cushions, somebody else definitely put it there." },
+      { kind: "Memory",       text: "What was a house rule that had nothing to do with punishment, just survival?",
+        note: "Taking the chicken out to thaw before mama got home, no dishes left in the sink overnight, shoes off the second you walked in the door." },
+      { kind: "Conversation", text: "Was spring break actually a break, or was it just spring cleaning with extra steps?",
+        note: "Somewhere between the Easter speech, the church revival, and dragging your little siblings everywhere you went." }
+    ],
+
+    music: [
+      { kind: "Conversation", text: "What's the oldest Black sitcom you can remember watching?",
+        note: "Extra credit if you can still say “Dyn-o-mite!” on cue." },
+      { kind: "Hot Take",     text: "Beyoncé is the best live performer and entertainer, period.",
+        note: "Don't agree? Fight me. Or go ahead — tell us who does it better." },
+      { kind: "Conversation", text: "What movie can you quote from start to finish?",
+        note: "“Man, my grandmama bought me that chain!” — if you know, you already know where that's from." },
+      { kind: "Conversation", text: "What's your guilty-pleasure reality show — the one you know is setting us back but you watch anyway?",
+        note: "We won't say the names. Real Housewives. Baddies. You said it, not us." },
+      { kind: "Conversation", text: "Which Black entertainer do you think a white artist borrowed a little too much from?",
+        note: "Chuck Berry and Elvis is usually where this conversation starts." },
+      { kind: "Memory",       text: "What's the first bootleg movie you remember watching?",
+        note: "Somebody's shoulder in the corner of the screen, the picture flickering, a stranger laughing way too loud in the background — you still watched the whole thing." },
+      { kind: "Conversation", text: "What book felt like the entire culture was reading it at the same time?",
+        note: "“The Coldest Winter Ever,” anything by Omar Tyree or Eric Jerome Dickey — the block had a whole library going." },
+      { kind: "Hot Take",     text: "Down South hip-hop vs. New York hip-hop — who's really running things?",
+        note: "New York was untouchable when it started this whole thing. So why's it still fighting to get back on top?" },
+      { kind: "Hot Take",     text: "Kendrick or Drake — who's really the best rapper out right now?",
+        note: "And why is everybody sleeping on Wale? And how did J. Cole slide out of this conversation without anybody noticing?" },
+      { kind: "Hot Take",     text: "Would Jay-Z be as big today if Tupac and Biggie were still here?",
+        note: "Imagine the arguments we'd be having if all three of them were still dropping albums." }
+    ],
+
+    comedy: [
+      { kind: "Finish the Line", text: "“Put it in reverse, ______.”",
+        note: "That's the viral “Put it in reverse, Terry” saying from the internet, not a Martin line — don't get it twisted." },
+      { kind: "Finish the Line", text: "“Go home, ______!”",
+        note: "Sister, Sister taught a generation how to hold a grudge in one word." },
+      { kind: "Finish the Line", text: "“And I oop... ______.”",
+        note: "A viral moment that refuses to die. As it should." },
+      { kind: "Finish the Line", text: "“Bye, ______.”",
+        note: "If you didn't say the name, were you even watching Friday?" },
+      { kind: "Joke",            text: "Tell a joke about asking your parents for money.",
+        note: "Something like: “Do I look like an ATM machine to you? You can't just swipe a card and expect money to fall out.” Now tell your version." },
+      { kind: "Joke",            text: "Tell a joke about the time you clowned somebody and it went too far.",
+        note: "Something like: “Stop! Drop! Angie got a big bald spot. Ohhh nooo, she need some Miracle Grow — and Angie is my momma!” Yeah, the whole bus laughed. Now tell yours." },
+      { kind: "Conversation",    text: "How many of these do you actually know: GYAITH, IKYFL, IYKYK?",
+        note: "GYAITH = get yourself in the house. IKYFL = I know you're fully lying. IYKYK = if you know, you know. Drop your own — we know you've got one." },
+      { kind: "Conversation",    text: "Share a clip from your favorite Facebook or Instagram comedian.",
+        note: "MoJo Brookz, SkinBone Comedy energy. Act it out if your phone's not handy." },
+      { kind: "Conversation",    text: "Who's a comedian that can make you laugh just by walking on stage?",
+        note: "If you said Kevin Hart, we already know you also do the voice." },
+      { kind: "Memory",          text: "What's the funniest family video or moment that still gets brought up at every gathering?",
+        note: "Bonus points if it's been forwarded in the family group chat at least a dozen times." }
+    ],
+
+    history: [
+      { kind: "Did You Know", text: "Claudette Colvin refused to give up her bus seat months before Rosa Parks did.",
+        note: "History picked a favorite, and it wasn't her. Why do you think that is?" },
+      { kind: "Did You Know", text: "Shirley Chisholm ran for President in 1972 — the first Black woman to seek a major party's nomination.",
+        note: "Her campaign slogan was literally “unbought and unbossed.” Iconic and undefeated." },
+      { kind: "Did You Know", text: "Black 'firsts' didn't stop in the history books — they're still happening.",
+        note: "Kamala Harris (first Black and South Asian VP), Ketanji Brown Jackson (first Black woman on the Supreme Court), Wes Moore (first Black governor of Maryland). Name one more." },
+      { kind: "Conversation", text: "How do you think homeownership and generational wealth in the Black community compare today to a generation ago?",
+        note: "Yes, we're bringing up the numbers. No, this isn't a sad card — just a real one." },
+      { kind: "Conversation", text: "What's a piece of Black history you learned outside of a classroom?",
+        note: "Because Ms. Johnson's unit definitely didn't cover it." },
+      { kind: "Did You Know", text: "Name an invention or innovation created by a Black inventor.",
+        note: "There's more than the stoplight and the ironing board — look it up after this round." },
+      { kind: "Conversation", text: "What moment in Black history still gives you chills when you think about it?",
+        note: "Not the Facebook-cousin kind of chills. The real kind." },
+      { kind: "Conversation", text: "If you could sit one relative down and record their whole life story, who would it be?",
+        note: "Yes, this is your sign. Call them this week, not 'one day.'" },
+      { kind: "Did You Know", text: "Madam C.J. Walker built a hair-care empire and became America's first self-made female millionaire.",
+        note: "Meanwhile we're over here still arguing about who invented the group chat side-eye." },
+      { kind: "Finish the Line", text: "The “talk” every Black parent has given at least once was about ______.",
+        note: "If you said “the police,” you're right. If you said “don't embarrass me in Target,” also right." }
+    ]
+
+  };
+
+  /* ===================================================================
+     ICONS — simple line-icons drawn with SVG (no photos, no clip art).
+     Add a new key here if you introduce a new category icon above.
+     =================================================================== */
+  var ICONS = {
+    cassette: '<rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="8.6" cy="12" r="2.1"/><circle cx="15.4" cy="12" r="2.1"/><path d="M10.5 12h3"/><path d="M6.8 16.5h10.4"/>',
+    tv:       '<path d="M8 7l4-4 4 4"/><rect x="3" y="7" width="18" height="13" rx="2.2"/><circle cx="12" cy="13.6" r="3.3"/>',
+    laugh:    '<circle cx="12" cy="12" r="8.2"/><path d="M7.7 13.6c1.3 1.7 2.7 2.5 4.3 2.5s3-.8 4.3-2.5"/><path d="M8.7 9.3h.01M15.3 9.3h.01" stroke-linecap="round" stroke-width="2.6"/><path d="M3.4 7.6c.6-.5 1.3-.8 2-.9M20.6 7.6c-.6-.5-1.3-.8-2-.9" stroke-linecap="round"/>',
+    torch:    '<path d="M12 2c2.2 3 3.4 5.4 3.4 7.6a3.4 3.4 0 1 1-6.8 0C8.6 7.4 9.8 5 12 2z"/><path d="M12 6.6c.9 1.4 1.4 2.5 1.4 3.4a1.4 1.4 0 1 1-2.8 0c0-.9.5-2 1.4-3.4z"/><path d="M9 15h6l-1.1 7h-3.8L9 15z"/>'
+  };
+
+  /* ===================================================================
+     STATE + NAVIGATION  (the logic below rarely needs editing)
+     =================================================================== */
+  var state = { screen: "landing", categoryId: null, index: 0, order: [] };
+
+  function shuffled(n){
+    var arr = []; for (var i=0;i<n;i++) arr.push(i);
+    for (var i=arr.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t = arr[i]; arr[i]=arr[j]; arr[j]=t;
+    }
+    return arr;
+  }
+
+  function showScreen(id){
+    document.querySelectorAll(".screen").forEach(function(s){
+      s.classList.toggle("active", s.id === "screen-" + id);
+    });
+    state.screen = id;
+    saveSnapshot();
+  }
+
+  function buildCategoryGrid(){
+    var grid = document.getElementById("cat-grid");
+    grid.innerHTML = "";
+    CATEGORIES.forEach(function(cat){
+      var btn = document.createElement("button");
+      btn.className = "cat-card";
+      btn.innerHTML =
+        '<span class="cat-card-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+          (ICONS[cat.icon] || ICONS.cassette) +
+        '</svg></span>' +
+        '<span class="cat-card-name">' + cat.name + '</span>';
+      btn.addEventListener("click", function(){ startCategory(cat.id); });
+      grid.appendChild(btn);
+    });
+  }
+
+  function startCategory(id){
+    state.categoryId = id;
+    state.order = shuffled((PROMPTS[id] || []).length);
+    state.index = 0;
+    var cat = CATEGORIES.find(function(c){ return c.id === id; });
+    document.getElementById("game-cat-label").textContent = cat ? cat.name : "";
+    buildDots();
+    renderPrompt();
+    showScreen("game");
+  }
+
+  function buildDots(){
+    var wrap = document.getElementById("dots");
+    wrap.innerHTML = "";
+    state.order.forEach(function(_, i){
+      var d = document.createElement("span");
+      d.className = "dot" + (i === state.index ? " is-active" : "");
+      wrap.appendChild(d);
+    });
+  }
+
+  function renderPrompt(){
+    var list = PROMPTS[state.categoryId] || [];
+    if (!list.length) return;
+    var item = list[state.order[state.index]];
+    document.getElementById("prompt-kind").textContent = item.kind;
+    document.getElementById("prompt-text").textContent = item.text;
+    document.getElementById("prompt-note").textContent = item.note || "";
+    Array.prototype.forEach.call(document.querySelectorAll("#dots .dot"), function(d, i){
+      d.classList.toggle("is-active", i === state.index);
+    });
+    saveSnapshot();
+  }
+
+  function nextPrompt(){
+    var list = PROMPTS[state.categoryId] || [];
+    if (state.index < list.length - 1){
+      state.index++;
+      renderPrompt();
+    } else {
+      showScreen("end");
+    }
+  }
+
+  function prevPrompt(){
+    if (state.index > 0){
+      state.index--;
+      renderPrompt();
+    }
+  }
+
+  /* ---------------- Swipe / drag on the prompt card ---------------- */
+  (function initSwipe(){
+    var card = document.getElementById("prompt-card");
+    var startX = 0, dx = 0, dragging = false;
+
+    card.addEventListener("pointerdown", function(e){
+      dragging = true; startX = e.clientX; dx = 0;
+      card.setPointerCapture(e.pointerId);
+      card.style.transition = "none";
+    });
+    card.addEventListener("pointermove", function(e){
+      if (!dragging) return;
+      dx = e.clientX - startX;
+      card.style.transform = "translateX(" + dx + "px) rotate(" + (dx/22) + "deg)";
+    });
+    function endDrag(){
+      if (!dragging) return;
+      dragging = false;
+      card.style.transition = "transform .28s ease";
+      if (dx <= -70){
+        card.style.transform = "translateX(-140%) rotate(-8deg)";
+        setTimeout(function(){ resetCard(); nextPrompt(); }, 180);
+      } else if (dx >= 70){
+        card.style.transform = "translateX(140%) rotate(8deg)";
+        setTimeout(function(){ resetCard(); prevPrompt(); }, 180);
+      } else {
+        card.style.transform = "translateX(0) rotate(0)";
+      }
+    }
+    function resetCard(){
+      card.style.transition = "none";
+      card.style.transform = "translateX(0) rotate(0)";
+    }
+    card.addEventListener("pointerup", endDrag);
+    card.addEventListener("pointercancel", endDrag);
+  })();
+
+  /* ---------------- Button wiring ---------------- */
+  document.getElementById("btn-start").addEventListener("click", function(){
+    buildCategoryGrid();
+    showScreen("categories");
+  });
+  document.getElementById("btn-next").addEventListener("click", nextPrompt);
+  document.getElementById("btn-change-cat").addEventListener("click", function(){
+    buildCategoryGrid();
+    showScreen("categories");
+  });
+  document.getElementById("btn-play-again").addEventListener("click", function(){
+    buildCategoryGrid();
+    showScreen("categories");
+  });
+  document.getElementById("btn-shop").addEventListener("click", function(){
+    window.open(SHOP_URL, "_blank", "noopener");
+  });
+
+  /* ---------------- Hot-reload state (keeps your place if this page
+     is updated while open) ---------------- */
+  function saveSnapshot(){
+    try{
+      if (window.claude && window.claude.hot && window.claude.hot.snapshot){
+        window.claude.hot.snapshot(state);
+      }
+    } catch(e){}
+  }
+
+  function boot(data){
+    buildCategoryGrid();
+    if (data && data.screen === "game" && data.categoryId && PROMPTS[data.categoryId]){
+      state = data;
+      var cat = CATEGORIES.find(function(c){ return c.id === state.categoryId; });
+      document.getElementById("game-cat-label").textContent = cat ? cat.name : "";
+      buildDots();
+      renderPrompt();
+      showScreen("game");
+    } else if (data && data.screen){
+      showScreen(data.screen);
+    }
+  }
+
+  try{
+    if (window.claude && window.claude.hot && window.claude.hot.ready){
+      window.claude.hot.ready(boot);
+    } else {
+      boot(window.claude && window.claude.hot ? window.claude.hot.data : null);
+    }
+  } catch(e){ boot(null); }
+
+})();
+</script>
