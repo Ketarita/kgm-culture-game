@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KGM Culture Pack — Your Free Bonus</title>
+<meta name="description" content="Your free KGM Culture Pack: conversation cards, the official playlist, and matching wallpapers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121110; --ink-soft:#1C1A17; --ink-line:#2A2723;
+    --cream:#F7F1E4; --cream-dim:#C9C2B2; --paper:#EFE7D4;
+    --gold:#C6A15B; --gold-deep:#9C7B3F; --gold-tint:rgba(198,161,91,0.14);
+    --font-display:"Fraunces", Georgia, serif;
+    --font-body:"Manrope", -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--ink); color:var(--cream);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    padding-top:env(safe-area-inset-top);
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:56px 24px 80px;}
+  .eyebrow{
+    text-align:center; letter-spacing:0.18em; text-transform:uppercase;
+    font-size:12px; font-weight:700; color:var(--gold); margin-bottom:14px;
+  }
+  h1{
+    font-family:var(--font-display); text-align:center;
+    font-size:clamp(30px, 6vw, 44px); font-weight:600; margin:0 0 8px;
+    color:var(--cream);
+  }
+  .sub{
+    text-align:center; color:var(--cream-dim); font-size:15px;
+    max-width:420px; margin:0 auto 40px; line-height:1.5;
+  }
+  .card{
+    background:var(--ink-soft); border:1px solid var(--ink-line);
+    border-radius:20px; padding:28px 24px; margin-bottom:20px;
+  }
+  .card-eyebrow{
+    font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:10px;
+  }
+  .card h2{
+    font-family:var(--font-display); font-size:22px; font-weight:600;
+    margin:0 0 8px; color:var(--cream);
+  }
+  .card p{color:var(--cream-dim); font-size:14.5px; line-height:1.55; margin:0 0 18px;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:100%; padding:14px 20px; border-radius:999px;
+    background:var(--gold); color:var(--ink); font-weight:700; font-size:15px;
+    text-decoration:none; transition:opacity .15s ease;
+  }
+  .btn:active{opacity:0.8;}
+  .btn-outline{
+    background:transparent; border:1.5px solid var(--gold); color:var(--gold);
+  }
+  .wallpaper-grid{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin-bottom:16px;
+  }
+  .wallpaper-item{
+    background:var(--ink); border:1px solid var(--ink-line); border-radius:12px;
+    padding:12px 10px; text-align:center;
+  }
+  .wallpaper-item .name{font-size:12.5px; color:var(--cream); font-weight:600; margin-bottom:8px;}
+  .wallpaper-item a{
+    display:inline-block; font-size:11px; font-weight:700; color:var(--gold);
+    text-decoration:none; padding:6px 10px; border:1px solid var(--gold-deep); border-radius:999px;
+    margin:2px;
+  }
+  footer{
+    text-align:center; margin-top:48px; padding-top:24px;
+    border-top:1px solid var(--ink-line);
+  }
+  footer .brand{
+    letter-spacing:0.14em; text-transform:uppercase; font-size:11px;
+    font-weight:700; color:var(--cream-dim);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">KGM Market</div>
+  <h1>Your Free Culture Pack</h1>
+  <p class="sub">A little something extra with your order — conversation cards, a playlist, and wallpapers made for the culture.</p>
+
+  <div class="card">
+    <div class="card-eyebrow">01 &middot; Play</div>
+    <h2>Conversation Cards</h2>
+    <p>A swipeable, mobile-first conversation game. Four categories, 40 prompts, zero setup — just tap and play.</p>
+    <a class="btn" href="../index.html">Open Conversation Cards</a>
+  </div>
+
+  <div class="card">
+    <div class="card-eyebrow">02 &middot; Listen</div>
+    <h2>The Soundtrack</h2>
+    <p>The official KGM Culture playlist on Spotify — put it on while you play.</p>
+    <a class="btn btn-outline" href="https://open.spotify.com/playlist/4Fiy6xsSDMGpLMW8jhGVBO" target="_blank" rel="noopener">Open on Spotify</a>
+  </div>
+
+  <div class="card">
+    <div class="card-eyebrow">03 &middot; Decorate</div>
+    <h2>Wallpapers</h2>
+    <p>Five designs, sized for your phone and your desktop. Tap a size to download and set as your background.</p>
+    <div class="wallpaper-grid">
+      <div class="wallpaper-item">
+        <div class="name">Black Men Matter</div>
+        <a href="wallpapers/kgm-wallpaper-black-men-matter-phone.png" download>Phone</a>
+        <a href="wallpapers/kgm-wallpaper-black-men-matter-desktop.png" download>Desktop</a>
+      </div>
+      <div class="wallpaper-item">
+        <div class="name">History Forgotten</div>
+        <a href="wallpapers/kgm-wallpaper-history-forgotten-phone.png" download>Phone</a>
+        <a href="wallpapers/kgm-wallpaper-history-forgotten-desktop.png" download>Desktop</a>
+      </div>
+      <div class="wallpaper-item">
+        <div class="name">Black Girls Gym'n</div>
+        <a href="wallpapers/kgm-wallpaper-black-girls-gymn-phone.png" download>Phone</a>
+        <a href="wallpapers/kgm-wallpaper-black-girls-gymn-desktop.png" download>Desktop</a>
+      </div>
+      <div class="wallpaper-item">
+        <div class="name">Protect Black Children</div>
+        <a href="wallpapers/kgm-wallpaper-protect-black-children-phone.png" download>Phone</a>
+        <a href="wallpapers/kgm-wallpaper-protect-black-children-desktop.png" download>Desktop</a>
+      </div>
+      <div class="wallpaper-item" style="grid-column: span 2;">
+        <div class="name">Protect Black Women</div>
+        <a href="wallpapers/kgm-wallpaper-protect-black-women-phone.png" download>Phone</a>
+        <a href="wallpapers/kgm-wallpaper-protect-black-women-desktop.png" download>Desktop</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="brand">KGM Market &middot; Represent The Culture</div>
+  </footer>
+</div>
+</body>
+</html>
