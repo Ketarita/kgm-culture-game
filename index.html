@@ -295,6 +295,11 @@
     text-transform:uppercase;
     color:var(--gold-deep);
     margin-bottom:18px;
+    display:inline-block;
+    background:rgba(198,161,91,.16);
+    border:1px solid rgba(198,161,91,.5);
+    border-radius:999px;
+    padding:7px 16px;
   }
   .prompt-text{
     font-family:var(--font-display);
@@ -520,8 +525,8 @@
         note: "Wigs were strictly for the grandmas, crochet went out then came back, baby hairs made a comeback — and don't even start on hot-comb day." },
       { kind: "Conversation", text: "What's a TV theme song you could hum right now without thinking?",
         note: "Go ahead, hum the Living Single theme. Everybody at this table just heard it in their head, don't lie." },
-      { kind: "Hot Take",     text: "The remote control was never 'misplaced' — it was stolen.",
-        note: "And when it turned up in the couch cushions, somebody else definitely put it there." },
+      { kind: "Agree or Argue", text: "Be honest — do we ever really lose anything, or does somebody just take it?",
+        note: "The remote wasn't \"misplaced,\" it was stolen. And when it turns up in the couch cushions? Somebody still put it there. We don't lose things. Never have." },
       { kind: "Memory",       text: "What was a house rule that had nothing to do with punishment, just survival?",
         note: "Taking the chicken out to thaw before mama got home, no dishes left in the sink overnight, shoes off the second you walked in the door." },
       { kind: "Conversation", text: "Was spring break actually a break, or was it just spring cleaning with extra steps?",
@@ -552,20 +557,20 @@
     ],
 
     comedy: [
-      { kind: "Finish the Line", text: "“Put it in reverse, ______.”",
-        note: "That's the viral “Put it in reverse, Terry” saying from the internet, not a Martin line — don't get it twisted." },
+      { kind: "Finish the Line", text: "Who are the 5 best rappers of all time?",
+        note: "Hint: he spits hot fire. And if you don't know, it's because they're out still getting sugar cookies — I mean, cheesecake." },
       { kind: "Finish the Line", text: "“Go home, ______!”",
         note: "Sister, Sister taught a generation how to hold a grudge in one word." },
-      { kind: "Finish the Line", text: "“And I oop... ______.”",
-        note: "A viral moment that refuses to die. As it should." },
-      { kind: "Finish the Line", text: "“Bye, ______.”",
-        note: "If you didn't say the name, were you even watching Friday?" },
-      { kind: "Joke",            text: "Tell a joke about asking your parents for money.",
-        note: "Something like: “Do I look like an ATM machine to you? You can't just swipe a card and expect money to fall out.” Now tell your version." },
+      { kind: "Finish the Line", text: "“Put it in reverse, ______”\n“Well, my lawd — a snappin' ______”",
+        note: "😂😂 That electric chair couldn't move fast enough. It's snappin' too." },
+      { kind: "Call It Out", text: "“Bye, Felicia.”\nWhat's a piece of our culture that's been used so much outside it, you're just done hearing it?",
+        note: "Can we all agree our other-color brothers and sisters have ruined \"Bye, Felicia\" for the rest of us? I don't want to see or hear a Felicia ever again." },
+      { kind: "Spill the Story", text: "Tell a story about a time your parents shamed you — in front of your friends, or just in general.",
+        note: "The funniest one I ever heard came from my best friend. Her mom told her: \"Do I look like an ATM where you can slide a card down the crack of my *ss and I sh*t out money?\"" },
       { kind: "Joke",            text: "Tell a joke about the time you clowned somebody and it went too far.",
         note: "Something like: “Stop! Drop! Angie got a big bald spot. Ohhh nooo, she need some Miracle Grow — and Angie is my momma!” Yeah, the whole bus laughed. Now tell yours." },
-      { kind: "Conversation",    text: "How many of these do you actually know: GYAITH, IKYFL, IYKYK?",
-        note: "GYAITH = get yourself in the house. IKYFL = I know you're fully lying. IYKYK = if you know, you know. Drop your own — we know you've got one." },
+      { kind: "Prove It", text: "How many of these do you actually know: GYAITH, IKYFL, IDGAF?",
+        note: "GYAITH = Get Yo' *ss In The House. IKYFL = I Know You F*ck*n' Lying. IDGAF = I Don't Give A F*ck. Drop your own — bonus points if you can figure out what IDGAMF stands for." },
       { kind: "Conversation",    text: "Share a clip from your favorite Facebook or Instagram comedian.",
         note: "MoJo Brookz, SkinBone Comedy energy. Act it out if your phone's not handy." },
       { kind: "Conversation",    text: "Who's a comedian that can make you laugh just by walking on stage?",
@@ -669,12 +674,16 @@
     });
   }
 
+  function escapeHtml(s){
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
   function renderPrompt(){
     var list = PROMPTS[state.categoryId] || [];
     if (!list.length) return;
     var item = list[state.order[state.index]];
     document.getElementById("prompt-kind").textContent = item.kind;
-    document.getElementById("prompt-text").textContent = item.text;
+    document.getElementById("prompt-text").innerHTML = escapeHtml(item.text).replace(/\n/g, "<br>");
     document.getElementById("prompt-note").textContent = item.note || "";
     Array.prototype.forEach.call(document.querySelectorAll("#dots .dot"), function(d, i){
       d.classList.toggle("is-active", i === state.index);
